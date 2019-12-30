@@ -2,6 +2,7 @@ package com.example.task;
 
 import com.example.task.domain.TaskModel;
 import com.helger.commons.collection.map.MapEntry;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,6 +11,26 @@ import java.util.*;
 public class FakeTaskService {
 
     private Map<Integer, TaskModel> tasks = new LinkedHashMap<>();
+
+    {
+      tasks.put(0, TaskModel.builder()
+              .message("Task 1 <TEST>")
+              .done(false)
+              .modificationTime(DateTime.now())
+              .build());
+
+      tasks.put(1, TaskModel.builder()
+              .message("Task 2 <TEST>")
+              .done(false)
+              .modificationTime(DateTime.now())
+              .build());
+
+      tasks.put(2, TaskModel.builder()
+              .message("Task 3 <TEST>")
+              .done(false)
+              .modificationTime(DateTime.now())
+              .build());
+    }
 
     public boolean addTask(TaskModel taskModel){
         if (taskModel == null)

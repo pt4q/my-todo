@@ -9,6 +9,6 @@ import org.joda.time.DateTime;
 public class TaskModel {
 
     private String message;
-    private Boolean done;
     private DateTime modificationTime;
+    private Boolean done;
 }

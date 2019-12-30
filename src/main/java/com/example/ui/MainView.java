@@ -4,6 +4,7 @@ import com.example.beans.MessageBean;
 import com.example.task.FakeTaskService;
 import com.example.task.domain.TaskModel;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H1;
@@ -31,8 +32,9 @@ public class MainView extends VerticalLayout {
     private H1 title = new H1("ToDo list");
     private TextField newTaskField = new TextField();
     private Button addTaskButton = new Button("Add task");
-    private Grid<TaskModel> taskGrid = new Grid<>();
-    private TaskModel taskModel;
+
+    private Grid<TaskModel> taskGrid;
+    private Checkbox done = new Checkbox();
 
     private FakeTaskService fakeTaskService;
 
@@ -60,19 +62,20 @@ public class MainView extends VerticalLayout {
     }
 
     private void setGridParams(){
+        taskGrid = new Grid<>(TaskModel.class);
+
         taskGrid.setId("list");
         taskGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
                 GridVariant.LUMO_NO_ROW_BORDERS);
         taskGrid.setHeightFull();
-        taskGrid.addColumn(e -> new H3(e.getMessage()));
-        taskGrid.addColumn(e -> new H3(e.getDone().toString()));
-        taskGrid.addColumn(e -> new H3(e.getModificationTime().toString()));
 
+        taskGrid.setColumns("message", "modificationTime", "done");
        refreshGrid();
     }
 
     private void refreshGrid(){
         taskGrid.setItems(getAllTasks());
+//        add(taskGrid);
     }
 
     private List<TaskModel> getAllTasks(){
