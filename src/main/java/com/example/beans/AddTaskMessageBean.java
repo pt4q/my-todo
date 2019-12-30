@@ -7,7 +7,7 @@ import com.example.task.domain.TaskModel;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageBean implements Serializable {
+public class AddTaskMessageBean implements Serializable {
 
     public String getMessage(String taskMessage) {
         return "Added:\n" + "\"" + taskMessage + "\"\n" + LocalTime.now();

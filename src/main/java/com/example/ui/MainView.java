@@ -1,14 +1,12 @@
 package com.example.ui;
 
-import com.example.beans.MessageBean;
+import com.example.beans.AddTaskMessageBean;
 import com.example.task.FakeTaskService;
 import com.example.task.domain.TaskModel;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -38,7 +36,7 @@ public class MainView extends VerticalLayout {
     private FakeTaskService fakeTaskService;
 
     @Autowired
-    public MainView(MessageBean bean, FakeTaskService fakeTaskService) {
+    public MainView(AddTaskMessageBean bean, FakeTaskService fakeTaskService) {
         this.fakeTaskService = fakeTaskService;
 
         addEventListerToAddTaskButton(bean);
@@ -70,15 +68,17 @@ public class MainView extends VerticalLayout {
         refreshGrid();
     }
 
-    private void addCheckboxColumnToGrid(){
-      taskGrid.addComponentColumn(taskModel -> {
-          Checkbox doneCheckbox = new Checkbox();
-          doneCheckbox.setValue(taskModel.getDone());
+    private void addCheckboxColumnToGrid() {
+        taskGrid.addComponentColumn(taskModel -> {
+            Checkbox doneCheckbox = new Checkbox();
+            doneCheckbox.setValue(taskModel.getDone());
 
-          return doneCheckbox;
-      })
-              .setHeader("Done")
-              .setSortable(true);
+            addEventListenerToTaskCheckbox(doneCheckbox, taskModel);
+
+            return doneCheckbox;
+        })
+                .setHeader("Done")
+                .setSortable(true);
     }
 
     private void refreshGrid() {
@@ -89,16 +89,20 @@ public class MainView extends VerticalLayout {
         return fakeTaskService.findAllAsList();
     }
 
-    private void addEventListerToAddTaskButton(MessageBean bean) {
+    private void addEventListerToAddTaskButton(AddTaskMessageBean bean) {
         addTaskButton.addClickListener(e -> {
             String message = newTaskField.getValue();
-
             Notification.show(bean.getMessage(message));
-
             fakeTaskService.addTask(
                     createTask(newTaskField.getValue()));
-
             newTaskField.clear();
+            refreshGrid();
+        });
+    }
+
+    private void addEventListenerToTaskCheckbox(Checkbox doneCheckbox, TaskModel taskModel) {
+        doneCheckbox.addValueChangeListener(event -> {
+            fakeTaskService.updateTaskModel(taskModel, event.getValue());
             refreshGrid();
         });
     }
