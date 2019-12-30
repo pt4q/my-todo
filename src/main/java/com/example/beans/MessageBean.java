@@ -1,4 +1,4 @@
-package com.example;
+package com.example.beans;
 
 import java.io.Serializable;
 import java.time.LocalTime;
