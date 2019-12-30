@@ -61,34 +61,32 @@ public class MainView extends VerticalLayout {
         add(page);
     }
 
-    private void setGridParams(){
+    private void setGridParams() {
         taskGrid = new Grid<>(TaskModel.class);
 
         taskGrid.setId("list");
-        taskGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER,
-                GridVariant.LUMO_NO_ROW_BORDERS);
-        taskGrid.setHeightFull();
-
         taskGrid.setColumns("message", "modificationTime", "done");
-       refreshGrid();
+
+        refreshGrid();
     }
 
-    private void refreshGrid(){
+    private void refreshGrid() {
         taskGrid.setItems(getAllTasks());
-//        add(taskGrid);
     }
 
-    private List<TaskModel> getAllTasks(){
+    private List<TaskModel> getAllTasks() {
         return fakeTaskService.findAllAsList();
     }
 
     private void addEventListerToAddTaskButton(MessageBean bean) {
         addTaskButton.addClickListener(e -> {
-            Notification.show(bean.getMessage());
+            String message = newTaskField.getValue();
+
+            Notification.show(bean.getMessage(message));
 
             fakeTaskService.addTask(
-                    createTask(newTaskField.getValue())
-            );
+                    createTask(newTaskField.getValue()));
+
             newTaskField.clear();
             refreshGrid();
         });
