@@ -34,7 +34,6 @@ public class MainView extends VerticalLayout {
     private Button addTaskButton = new Button("Add task");
 
     private Grid<TaskModel> taskGrid;
-    private Checkbox done = new Checkbox();
 
     private FakeTaskService fakeTaskService;
 
@@ -65,9 +64,21 @@ public class MainView extends VerticalLayout {
         taskGrid = new Grid<>(TaskModel.class);
 
         taskGrid.setId("list");
-        taskGrid.setColumns("message", "modificationTime", "done");
+        taskGrid.setColumns("message", "modificationTime");
+        addCheckboxColumnToGrid();
 
         refreshGrid();
+    }
+
+    private void addCheckboxColumnToGrid(){
+      taskGrid.addComponentColumn(taskModel -> {
+          Checkbox doneCheckbox = new Checkbox();
+          doneCheckbox.setValue(taskModel.getDone());
+
+          return doneCheckbox;
+      })
+              .setHeader("Done")
+              .setSortable(true);
     }
 
     private void refreshGrid() {
