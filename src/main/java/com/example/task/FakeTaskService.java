@@ -1,7 +1,7 @@
 package com.example.task;
 
 import com.example.task.domain.TaskModel;
-import com.helger.commons.collection.map.MapEntry;
+import com.example.task.domain.TaskPriorityEnum;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +15,23 @@ public class FakeTaskService {
     {
         tasks.put(0, TaskModel.builder()
                 .message("Task 1 <TEST>")
+                .priority(TaskPriorityEnum.NORMAL)
                 .done(false)
-                .modificationTime(DateTime.now())
+                .startTime(DateTime.now())
                 .build());
 
         tasks.put(1, TaskModel.builder()
                 .message("Task 2 <TEST>")
+                .priority(TaskPriorityEnum.HIGH)
                 .done(false)
-                .modificationTime(DateTime.now())
+                .startTime(DateTime.now())
                 .build());
 
         tasks.put(2, TaskModel.builder()
                 .message("Task 3 <TEST>")
+                .priority(TaskPriorityEnum.LOW)
                 .done(false)
-                .modificationTime(DateTime.now())
+                .startTime(DateTime.now())
                 .build());
     }
 
@@ -50,13 +53,19 @@ public class FakeTaskService {
         return resultList;
     }
 
-    public TaskModel updateTaskModel(TaskModel oldTask, Boolean done) {
+    public TaskModel updateTaskModelIsDone(TaskModel oldTask, Boolean done) {
         Integer taskId = findId(oldTask);
         oldTask.setDone(done);
-        oldTask.setModificationTime(DateTime.now());
+        oldTask.setEndTime(DateTime.now());
 
-        tasks.put(taskId, oldTask);
-        return oldTask;
+        return tasks.put(taskId, oldTask);
+    }
+
+    public TaskModel updateTaskModelPriority(TaskModel oldTask, TaskPriorityEnum priority){
+        Integer taskId = findId(oldTask);
+        oldTask.setPriority(priority);
+
+        return tasks.put(taskId, oldTask);
     }
 
     public Integer findId(TaskModel taskModelToFind) {
@@ -64,10 +73,8 @@ public class FakeTaskService {
             Integer key = taskModelEntry.getKey();
             TaskModel taskModel = taskModelEntry.getValue();
 
-            if (taskModelToFind.getMessage().equals(taskModel.getMessage()))
-                if (taskModelToFind.getDone().equals(taskModel.getDone()))
-                    if (taskModelToFind.getModificationTime().equals(taskModel.getModificationTime()))
-                        return key;
+            if (taskModel.equals(taskModelToFind))
+                return key;
         }
         return null;
     }

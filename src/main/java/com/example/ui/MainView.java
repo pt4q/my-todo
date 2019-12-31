@@ -3,20 +3,24 @@ package com.example.ui;
 import com.example.beans.AddTaskMessageBean;
 import com.example.task.FakeTaskService;
 import com.example.task.domain.TaskModel;
+import com.example.task.domain.TaskPriorityEnum;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.PWA;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.PWA;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Route
@@ -25,10 +29,13 @@ public class MainView extends VerticalLayout {
 
     //    private VerticalLayout mainPage = new VerticalLayout();
     private VerticalLayout page = new VerticalLayout();
-    private HorizontalLayout todosElements = new HorizontalLayout();
 
-    private H1 title = new H1("ToDo list");
+
+    private H1 title = new H1("ToDo");
+    private Div taskContainer = new Div();
+
     private TextField newTaskField = new TextField();
+    private ComboBox<TaskPriorityEnum> taskPriorityComboBox = new ComboBox<>("Priority");
     private Button addTaskButton = new Button("Add task");
 
     private Grid<TaskModel> taskGrid;
@@ -49,20 +56,39 @@ public class MainView extends VerticalLayout {
         page.add(title);
         page.setHorizontalComponentAlignment(Alignment.CENTER, title);
 
-        todosElements.add(newTaskField, addTaskButton);
-        page.add(todosElements);
-        page.setHorizontalComponentAlignment(Alignment.CENTER, todosElements);
+        taskContainerRendering();
 
         page.add(taskGrid);
 
         add(page);
     }
 
+    private void taskContainerRendering() {
+        HorizontalLayout line1 = new HorizontalLayout();
+        HorizontalLayout line2 = new HorizontalLayout();
+
+        setTaskPriorityComboBoxValues();
+
+        line1.add(newTaskField);
+        line1.setWidthFull();
+        line2.add(taskPriorityComboBox, addTaskButton);
+
+        taskContainer.setId("task-container");
+        taskContainer.add(line1, line2);
+
+        page.add(taskContainer);
+        page.setHorizontalComponentAlignment(Alignment.CENTER, taskContainer);
+    }
+
+    private void setTaskPriorityComboBoxValues() {
+        taskPriorityComboBox.setItems(new ArrayList<>(Arrays.asList(TaskPriorityEnum.values())));
+    }
+
     private void setGridParams() {
         taskGrid = new Grid<>(TaskModel.class);
 
         taskGrid.setId("list");
-        taskGrid.setColumns("message", "modificationTime");
+        taskGrid.setColumns("message", "priority", "startTime", "endTime");
         addCheckboxColumnToGrid();
 
         refreshGrid();
@@ -94,7 +120,7 @@ public class MainView extends VerticalLayout {
             String message = newTaskField.getValue();
             Notification.show(bean.getMessage(message));
             fakeTaskService.addTask(
-                    createTask(newTaskField.getValue()));
+                    createTask(newTaskField.getValue(), taskPriorityComboBox.getValue()));
             newTaskField.clear();
             refreshGrid();
         });
@@ -102,16 +128,17 @@ public class MainView extends VerticalLayout {
 
     private void addEventListenerToTaskCheckbox(Checkbox doneCheckbox, TaskModel taskModel) {
         doneCheckbox.addValueChangeListener(event -> {
-            fakeTaskService.updateTaskModel(taskModel, event.getValue());
+            fakeTaskService.updateTaskModelIsDone(taskModel, event.getValue());
             refreshGrid();
         });
     }
 
-    private TaskModel createTask(String taskMessage) {
+    private TaskModel createTask(String taskMessage, TaskPriorityEnum priority) {
         return TaskModel.builder()
                 .message(taskMessage)
+                .priority(priority)
                 .done(false)
-                .modificationTime(DateTime.now())
+                .startTime(DateTime.now())
                 .build();
     }
 }

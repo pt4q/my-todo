@@ -1,14 +1,15 @@
 package com.example.task.domain;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.joda.time.DateTime;
 
-@Data
 @Builder
+@Data
 public class TaskModel {
 
     private String message;
-    private DateTime modificationTime;
+    private DateTime startTime;
+    private DateTime endTime;
+    private TaskPriorityEnum priority;
     private Boolean done;
 }
