@@ -12,12 +12,13 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.PWA;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.PWA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +90,7 @@ public class MainView extends VerticalLayout {
 
         taskGrid.setId("list");
         taskGrid.setColumns("message", "priority", "startTime", "endTime");
+        taskGrid.setSortableColumns("message", "priority", "startTime", "endTime");
         addCheckboxColumnToGrid();
 
         refreshGrid();
