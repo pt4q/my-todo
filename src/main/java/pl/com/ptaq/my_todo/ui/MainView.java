@@ -1,5 +1,6 @@
 package pl.com.ptaq.my_todo.ui;
 
+import com.vaadin.flow.component.Key;
 import pl.com.ptaq.my_todo.beans.AddTaskMessageBean;
 import pl.com.ptaq.my_todo.task.domain.TaskModel;
 import pl.com.ptaq.my_todo.task.domain.TaskPriorityEnum;
@@ -47,10 +48,12 @@ public class MainView extends VerticalLayout {
     public MainView(AddTaskMessageBean bean, FakeTaskService fakeTaskService) {
         this.fakeTaskService = fakeTaskService;
 
-        addEventListerToAddTaskButton(bean);
         setGridParams();
 
         elementsArrangement();
+
+        addEventListerToAddTaskButton(bean);
+        addAddTaskEnterShortcut();
     }
 
     private void elementsArrangement() {
@@ -126,6 +129,10 @@ public class MainView extends VerticalLayout {
             newTaskField.clear();
             refreshGrid();
         });
+    }
+
+    private void addAddTaskEnterShortcut(){
+        addTaskButton.addClickShortcut(Key.ENTER);
     }
 
     private void addEventListenerToTaskCheckbox(Checkbox doneCheckbox, TaskModel taskModel) {
