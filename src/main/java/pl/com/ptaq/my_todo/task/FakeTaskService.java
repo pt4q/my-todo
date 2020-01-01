@@ -1,7 +1,7 @@
-package com.example.task;
+package pl.com.ptaq.my_todo.task;
 
-import com.example.task.domain.TaskModel;
-import com.example.task.domain.TaskPriorityEnum;
+import pl.com.ptaq.my_todo.task.domain.TaskModel;
+import pl.com.ptaq.my_todo.task.domain.TaskPriorityEnum;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.task.domain;
+package pl.com.ptaq.my_todo.task.domain;
 
 import lombok.*;
 import org.joda.time.DateTime;

@@ -1,9 +1,8 @@
-package com.example.beans;
+package pl.com.ptaq.my_todo.beans;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 
-import com.example.task.domain.TaskModel;
 import org.springframework.stereotype.Service;
 
 @Service

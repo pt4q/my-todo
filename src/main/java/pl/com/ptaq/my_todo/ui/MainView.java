@@ -1,9 +1,9 @@
-package com.example.ui;
+package pl.com.ptaq.my_todo.ui;
 
-import com.example.beans.AddTaskMessageBean;
-import com.example.task.FakeTaskService;
-import com.example.task.domain.TaskModel;
-import com.example.task.domain.TaskPriorityEnum;
+import pl.com.ptaq.my_todo.beans.AddTaskMessageBean;
+import pl.com.ptaq.my_todo.task.domain.TaskModel;
+import pl.com.ptaq.my_todo.task.domain.TaskPriorityEnum;
+import pl.com.ptaq.my_todo.task.FakeTaskService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;

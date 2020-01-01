@@ -1,4 +1,4 @@
-package com.example;
+package pl.com.ptaq.my_todo;
 
 import org.junit.Assert;
 import org.junit.Before;
