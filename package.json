@@ -1,5 +1,5 @@
 {
-  "name": "no-name",
+  "name": "myapp",
   "license": "UNLICENSED",
   "dependencies": {
     "@polymer/polymer": "3.2.0",
@@ -16,5 +16,9 @@
     "raw-loader": "3.0.0",
     "compression-webpack-plugin": "3.0.1"
   },
-  "vaadinAppPackageHash": "9426348e394f5d04616d1756ab143bd939076cf4f3f89978190330df61ef09ec"
+  "vaadinAppPackageHash": "9426348e394f5d04616d1756ab143bd939076cf4f3f89978190330df61ef09ec",
+
+  "engines": {
+    "node": "12.13.0"
+  }
 }
