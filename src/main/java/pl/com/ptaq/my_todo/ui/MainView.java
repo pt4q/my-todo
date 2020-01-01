@@ -123,15 +123,18 @@ public class MainView extends VerticalLayout {
     private void addEventListerToAddTaskButton(AddTaskMessageBean bean) {
         addTaskButton.addClickListener(e -> {
             String message = newTaskField.getValue();
-            Notification.show(bean.getMessage(message));
-            fakeTaskService.addTask(
-                    createTask(newTaskField.getValue(), taskPriorityComboBox.getValue()));
-            newTaskField.clear();
-            refreshGrid();
+
+            if (!message.isEmpty()) {
+                Notification.show(bean.getMessage(message));
+                fakeTaskService.addTask(
+                        createTask(newTaskField.getValue(), taskPriorityComboBox.getValue()));
+                newTaskField.clear();
+                refreshGrid();
+            }
         });
     }
 
-    private void addAddTaskEnterShortcut(){
+    private void addAddTaskEnterShortcut() {
         addTaskButton.addClickShortcut(Key.ENTER);
     }
 
